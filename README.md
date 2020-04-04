@@ -26,4 +26,10 @@ External IP: 34.91.156.166 (Updated 04/04/2020)
 External IP: 34.91.44.121 (Updated 04/04/2020)
 ```
 
-Made by ALexandre Silva & Luís Ferreira
+### Mockups
+
+```
+Located in dedicated branch (mockups)
+```
+
+Made by Alexandre Silva & Luís Ferreira
