@@ -1,24 +1,29 @@
-# peebu_web
+# PeeBu
 
 ## Project setup
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+## Jenkins
+
 ```
-npm run serve
+Username: admin
+Password: JkadT.7b
+External IP: 34.91.111.53 (Updated 04/04/2020)
 ```
 
-### Compiles and minifies for production
+### Production
+
 ```
-npm run build
+External IP: 34.91.156.166 (Updated 04/04/2020)
 ```
 
-### Lints and fixes files
+### Staging
+
 ```
-npm run lint
+External IP: 34.91.44.121 (Updated 04/04/2020)
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Made by ALexandre Silva & Luís Ferreira
