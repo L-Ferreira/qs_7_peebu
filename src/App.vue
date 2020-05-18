@@ -1,12 +1,18 @@
 <template>
-  <v-app></v-app>
+  <v-app>
+    <AppBar />
+  </v-app>
 </template>
 
 <script>
+import AppBar from "@/components/AppBar.vue";
+
 export default {
   name: "App",
 
-  components: {},
+  components: {
+    AppBar
+  },
 
   data: () => ({
     //
