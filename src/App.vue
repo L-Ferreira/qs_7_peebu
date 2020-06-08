@@ -1,6 +1,13 @@
 <template>
   <v-app>
     <AppBar />
+    <br />
+    <v-content>
+      <v-container>
+        <h1>Welcome!</h1>
+        <h2>Your current balance is: 12345 €</h2>
+      </v-container>
+    </v-content>
   </v-app>
 </template>
 
