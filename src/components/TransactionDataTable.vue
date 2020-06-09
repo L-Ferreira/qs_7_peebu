@@ -27,7 +27,9 @@
     </v-data-table>
   </div>
 </template> 
+
 <script>
+import axios from "axios";
 export default {
   data: () => ({
     editDialog: false,
@@ -43,7 +45,42 @@ export default {
       { text: "Type", value: "type" },
       { text: "Category", value: "category" },
       { text: "Actions", value: "actions", sortable: false }
-    ]
-  })
+    ],
+    expenses: [],
+    search: "",
+    editedIndex: -1,
+    editedItem: {
+      index: ""
+    },
+
+    startDate: null,
+    endDate: null,
+
+    menu1: false,
+    menu2: false
+  }),
+  mounted() {
+    this.getAllExpenses();
+  },
+
+  methods: {
+    getAllExpenses() {
+      axios.get("https://peebu-2020.firebaseio.com/.json").then(
+        response =>
+          (this.expenses = response.data.filter(({ createdAt }) => {
+            if (this.startDate && this.endDate) {
+              const fromDate = new Date(this.startDate).getTime();
+              const toDate = new Date(this.endDate).getTime();
+              if (fromDate && toDate && fromDate <= toDate) {
+                const nextDate = new Date(createdAt).getTime();
+                return nextDate >= fromDate && nextDate <= toDate;
+              }
+              return true;
+            }
+            return true;
+          }))
+      );
+    }
+  }
 };
 </script>
