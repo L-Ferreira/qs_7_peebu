@@ -8,6 +8,8 @@
         <h2>Your current balance is: 12345 €</h2>
         <br />
         <TransactionDataTable />
+        <br />
+        <h1>Statistics</h1>
       </v-container>
     </v-content>
   </v-app>
