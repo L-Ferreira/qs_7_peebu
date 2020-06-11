@@ -22,6 +22,7 @@
 						:info-dialog="infoDialog"
 						:edited-item="editedItem"
 						@infoDialogClosed="closeInfoDialog"
+						@categoryChange="categoryChange"
 					></TransactionInfoDialog>
 				</v-toolbar>
 			</template>
@@ -108,6 +109,11 @@ export default {
 
 		closeInfoDialog(value) {
 			this.infoDialog = value;
+		},
+
+		categoryChange(value) {
+			this.infoDialog = value;
+			this.getAllExpenses();
 		},
 	},
 };
