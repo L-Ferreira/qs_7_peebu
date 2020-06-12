@@ -26,6 +26,19 @@
 					></TransactionInfoDialog>
 				</v-toolbar>
 			</template>
+			<template v-slot:item.category="{ item }">
+				<v-row>
+					<div v-for="(category, i) in categories" :key="i">
+						<v-img
+							v-if="category.name == item.category"
+							:src="category.src"
+							max-height="23px"
+							max-width="23px"
+						></v-img>
+					</div>
+					<span>{{ item.category }}</span>
+				</v-row>
+			</template>
 			<template v-slot:item.actions="{ item }">
 				<!-- <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon> -->
 				<v-icon small @click="itemInfo(item)"
@@ -59,6 +72,37 @@ export default {
 			{ text: "Type", value: "type" },
 			{ text: "Category", value: "category" },
 			{ text: "Actions", value: "actions", sortable: false },
+		],
+		categories: [
+			{ name: "Car Repair", src: require("./../assets/CarRepair.jpg") },
+			{
+				name: "Catering And Accommodation",
+				src: require("./../assets/CateringAndAccommodation.jpg"),
+			},
+			{ name: "Education", src: require("./../assets/Education.jpg") },
+			{
+				name: "General Household Expenses",
+				src: require("./../assets/GeneralHouseholdExpenses.jpg"),
+			},
+			{
+				name: "Hairdresser",
+				src: require("./../assets/Hairdresser.jpg"),
+			},
+			{ name: "Health", src: require("./../assets/Health.jpg") },
+			{
+				name: "Monthly Passes",
+				src: require("./../assets/MonthlyPasses.jpg"),
+			},
+			{
+				name: "Motorcycle Repair",
+				src: require("./../assets/MotorcycleRepair.jpg"),
+			},
+			{
+				name: "Nursing Home",
+				src: require("./../assets/NursingHome.jpg"),
+			},
+			{ name: "Residence", src: require("./../assets/Residence.jpg") },
+			{ name: "Vet", src: require("./../assets/Vet.jpg") },
 		],
 		expenses: [],
 		search: "",
