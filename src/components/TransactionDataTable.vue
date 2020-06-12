@@ -18,6 +18,63 @@
 						single-line
 						hide-details
 					></v-text-field>
+					<v-divider class="mx-4" inset vertical></v-divider>
+					<div>
+						<v-menu
+							v-model="menu1"
+							:close-on-content-click="false"
+							nudge-bottom
+							transition="scale-transition"
+							offset-y
+						>
+							<template v-slot:activator="{ on }">
+								<v-text-field
+									v-model="startDate"
+									clearable
+									label="Start date"
+									prepend-icon="mdi-calendar"
+									readonly
+									v-on="on"
+								></v-text-field>
+							</template>
+							<v-date-picker
+								class="pa-0"
+								no-title
+								reactive
+								v-model="startDate"
+								@input="menu1 = false"
+							></v-date-picker>
+						</v-menu>
+					</div>
+					<div>
+						<v-menu
+							v-model="menu2"
+							:close-on-content-click="false"
+							transition="scale-transition"
+							offset-y
+						>
+							<template v-slot:activator="{ on }">
+								<v-text-field
+									v-model="endDate"
+									clearable
+									label="End date"
+									prepend-icon="mdi-calendar"
+									readonly
+									v-on="on"
+								></v-text-field>
+							</template>
+							<v-date-picker
+								no-title
+								reactive
+								v-model="endDate"
+								@input="menu2 = false"
+							></v-date-picker>
+						</v-menu>
+					</div>
+					<v-divider class="mx-4" inset vertical></v-divider>
+					<div>
+						<v-btn @click="getAllExpenses()">Go!</v-btn>
+					</div>
 					<TransactionInfoDialog
 						:info-dialog="infoDialog"
 						:edited-item="editedItem"
@@ -40,8 +97,8 @@
 				</v-row>
 			</template>
 			<template v-slot:item.createdAt="{ item }">
-                <span>{{ new Date(item.createdAt).toLocaleDateString() }}</span>
-            </template>
+				<span>{{ new Date(item.createdAt).toLocaleDateString() }}</span>
+			</template>
 			<template v-slot:item.actions="{ item }">
 				<!-- <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon> -->
 				<v-icon small @click="itemInfo(item)"
