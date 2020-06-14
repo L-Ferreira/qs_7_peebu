@@ -32,6 +32,7 @@
 				<br />
 				<br />
 				<br />
+				<StatisticsByBalance />
 			</v-container>
 		</v-content>
 		<Footer />
@@ -46,6 +47,7 @@ import Footer from "@/components/Footer.vue";
 import CategoryAlert from "@/components/CategoryAlert.vue";
 import StatisticsByCategory from "@/components/statistics/StatisticsByCategory.vue";
 import StatisticsByType from "@/components/statistics/StatisticsByType.vue";
+import StatisticsByBalance from "@/components/statistics/StatisticsByBalance.vue";
 
 export default {
 	name: "App",
@@ -57,6 +59,7 @@ export default {
 		CategoryAlert,
 		StatisticsByCategory,
 		StatisticsByType,
+		StatisticsByBalance,
 	},
 
 	data: () => ({
