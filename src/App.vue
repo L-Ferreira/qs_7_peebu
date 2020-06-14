@@ -7,14 +7,14 @@
 				<h1>Welcome!</h1>
 				<h2>Your current balance is: 12345 €</h2>
 				<CategoryAlert
-  					v-if="expensesCategorized"
+					v-if="expensesCategorized"
 					@updateTable="isCategoryChanged = true"
 				/>
 				<br />
 				<TransactionDataTable
-                    :categoriesFixed="isCategoryChanged"
-                    @categoriesFixedFalse="categoriesFalse"
-                />
+					:categoriesFixed="isCategoryChanged"
+					@categoriesFixedFalse="categoriesFalse"
+				/>
 				<br />
 				<h1>Statistics</h1>
 			</v-container>
@@ -42,33 +42,33 @@ export default {
 
 	data: () => ({
 		expensesCategorized: false,
-        expenses: [],
+		expenses: [],
 		isCategoryChanged: false,
 	}),
 
 	async created() {
-        await this.getAllExpenses();
-    },
+		await this.getAllExpenses();
+	},
 
 	methods: {
 		async getAllExpenses() {
-            await axios.get("https://peebu-2020.firebaseio.com/.json").then(
-                (response) => (
-                    (this.expenses = response.data),
-                    this.expenses.some((expense) => {
-                        if (expense.category == "none") {
-                            return (this.expensesCategorized = true);
-                        } else {
-                            this.expensesCategorized = false;
-                        }
-                    })
-                )
-            );
-        },
+			await axios.get("https://peebu-2020.firebaseio.com/.json").then(
+				(response) => (
+					(this.expenses = response.data),
+					this.expenses.some((expense) => {
+						if (expense.category == "none") {
+							return (this.expensesCategorized = true);
+						} else {
+							this.expensesCategorized = false;
+						}
+					})
+				)
+			);
+		},
 		categoriesFalse(value) {
-            this.isCategoryChanged = value;
-            this.getAllExpenses();
-        },
+			this.isCategoryChanged = value;
+			this.getAllExpenses();
+		},
 	}
 };
 </script>
