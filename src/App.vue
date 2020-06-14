@@ -1,74 +1,78 @@
 <template>
-	<v-app>
-		<AppBar />
-		<br />
-		<v-content>
-			<v-container>
-				<h1>Welcome!</h1>
-				<h2>Your current balance is: 12345 €</h2>
-				<CategoryAlert
-					v-if="expensesCategorized"
-					@updateTable="isCategoryChanged = true"
-				/>
-				<br />
-				<TransactionDataTable
-					:categoriesFixed="isCategoryChanged"
-					@categoriesFixedFalse="categoriesFalse"
-				/>
-				<br />
-				<h1>Statistics</h1>
-			</v-container>
-		</v-content>
-		<Footer />
-	</v-app>
+  <v-app>
+    <AppBar />
+    <br />
+    <v-content>
+      <v-container>
+        <h1>Welcome!</h1>
+        <h2>Your current balance is: 12345 €</h2>
+        <CategoryAlert v-if="expensesCategorized" @updateTable="isCategoryChanged = true" />
+        <br />
+        <TransactionDataTable
+          :categoriesFixed="isCategoryChanged"
+          @categoriesFixedFalse="categoriesFalse"
+        />
+        <br />
+        <h1>Statistics</h1>
+        <br />
+        <StatisticsByCategory />
+        <br />
+        <br />
+        <br />
+      </v-container>
+    </v-content>
+    <Footer />
+  </v-app>
 </template>
 
 <script>
 import axios from "axios";
-import CategoryAlert from "@/components/CategoryAlert.vue";
 import AppBar from "@/components/AppBar.vue";
 import TransactionDataTable from "@/components/TransactionDataTable.vue";
 import Footer from "@/components/Footer.vue";
+import CategoryAlert from "@/components/CategoryAlert.vue";
+import StatisticsByCategory from "@/components/statistics/StatisticsByCategory.vue";
 
 export default {
-	name: "App",
+  name: "App",
 
-	components: {
-		CategoryAlert,
-		AppBar,
-		TransactionDataTable,
-		Footer,
-	},
+  components: {
+    AppBar,
+    TransactionDataTable,
+    Footer,
+    CategoryAlert,
+    StatisticsByCategory
+  },
 
-	data: () => ({
-		expensesCategorized: false,
-		expenses: [],
-		isCategoryChanged: false,
-	}),
+  data: () => ({
+    expensesCategorized: false,
+    expenses: [],
+    isCategoryChanged: false
+  }),
 
-	async created() {
-		await this.getAllExpenses();
-	},
+  async created() {
+    await this.getAllExpenses();
+  },
 
-	methods: {
-		async getAllExpenses() {
-			await axios.get("https://peebu-2020.firebaseio.com/.json").then(
-				(response) => (
-					(this.expenses = response.data),
-					this.expenses.some((expense) => {
-						if (expense.category == "none") {
-							return (this.expensesCategorized = true);
-						} else {
-							this.expensesCategorized = false;
-						}
-					})
-				)
-			);
-		},
-		categoriesFalse(value) {
-			this.isCategoryChanged = value;
-			this.getAllExpenses();
-		},
-	}
+  methods: {
+    async getAllExpenses() {
+      await axios.get("https://peebu-2020.firebaseio.com/.json").then(
+        response => (
+          (this.expenses = response.data),
+          this.expenses.some(expense => {
+            if (expense.category == "none") {
+              return (this.expensesCategorized = true);
+            } else {
+              this.expensesCategorized = false;
+            }
+          })
+        )
+      );
+    },
+    categoriesFalse(value) {
+      this.isCategoryChanged = value;
+      this.getAllExpenses();
+    }
+  }
 };
 </script>
