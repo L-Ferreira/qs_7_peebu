@@ -14,17 +14,23 @@
 					:chartdata="chartDataNumber"
 				/>
 			</v-col>
+			<v-col>
+				<h4>Expenses by category</h4>
+				<ExpensesByCategory />
+			</v-col>
 		</v-row>
 	</div>
 </template>
 
 <script>
 import TransactionsByCategory from "@/components/statistics/TransactionsByCategoryChart.vue";
+import ExpensesByCategory from "@/components/statistics/ExpensesByCategoryChart.vue";
 import axios from "axios";
 
 export default {
 	components: {
 		TransactionsByCategory,
+		ExpensesByCategory,
 	},
 	data: () => ({
 		loadedTransactions: false,
