@@ -16,7 +16,10 @@
 			</v-col>
 			<v-col>
 				<h4>Expenses by type</h4>
-				<ExpensesByType />
+				<ExpensesByType 
+					v-if="loadedExpenses"
+					:chartdata="chartDataAmount"
+				/>
 			</v-col>
 		</v-row>
 	</div>
@@ -36,15 +39,23 @@ export default {
 
 	data: () => ({
 		loadedTransactions: false,
+		loadedExpenses: false,
+		chartDataAmount: null,
 		chartDataNumber: null,
 
 		expenses: [],
 		number: [],
+		amount: [],
 
 		numberOfDeposit: 0,
 		numberOfInvoice: 0,
 		numberOfPayment: 0,
 		numberOfWithdrawal: 0,
+
+		amountOfDeposit: 0,
+		amountOfInvoice: 0,
+		amountOfPayment: 0,
+		amountOfWithdrawal: 0,
 	}),
 
 	methods: {
@@ -120,11 +131,62 @@ export default {
 
 			this.loadedTransactions = true;
 		},
+
+		getExpensesChart() {
+			this.loadedExpenses = false;
+			this.amount = [];
+			this.amountOfDeposit = 0;
+			this.amountOfInvoice = 0;
+			this.amountOfPayment = 0;
+			this.amountOfWithdrawal = 0;
+
+			this.expenses.forEach((expense) => {
+				switch (expense.type) {
+					case "deposit":
+						this.amountOfDeposit += +expense.amount;
+						break;
+					case "invoice":
+						this.amountOfInvoice += +expense.amount;
+						break;
+					case "payment":
+						this.amountOfPayment += +expense.amount;
+						break;
+					case "withdrawal":
+						this.amountOfWithdrawal += +expense.amount;
+						break;
+					default:
+						break;
+				}
+			});
+
+			this.amount.push(this.amountOfDeposit);
+			this.amount.push(this.amountOfInvoice);
+			this.amount.push(this.amountOfPayment);
+			this.amount.push(this.amountOfWithdrawal);
+
+			this.chartDataAmount = {
+				labels: ["Deposit", "Invoice", "Payment", "Withdrawal"],
+				datasets: [
+					{
+						label: "Expenses by type",
+						backgroundColor: [
+							"#0D47A1",
+							"#01579B",
+							"#1565C0",
+							"#0277BD",
+						],
+						data: this.amount,
+					},
+				],
+			};
+			this.loadedExpenses = true;
+		},
 	},
 
 	async mounted() {
 		await this.getAllExpenses();
 		await this.getTransactionsChart();
+		await this.getExpensesChart();
 	},
 
 	watch: {
@@ -133,6 +195,7 @@ export default {
 			console.log(this.expenses.length);
 
 			this.getTransactionsChart();
+			this.getExpensesChart();
 		},
 	},
 };
