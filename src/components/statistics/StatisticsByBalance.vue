@@ -6,10 +6,17 @@
 			</v-col>
 		</v-row>
 		<br />
+		<Balance />
 	</div>
 </template>
+
 <script>
+import Balance from "@/components/statistics/BalanceChart.vue";
+
 export default {
+	components: {
+		Balance,
+	},
 	data: () => ({}),
 	methods: {},
 };
