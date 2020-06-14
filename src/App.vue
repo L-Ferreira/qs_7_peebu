@@ -28,6 +28,10 @@
 				<br />
 				<br />
 				<br />
+				<StatisticsByType />
+				<br />
+				<br />
+				<br />
 			</v-container>
 		</v-content>
 		<Footer />
@@ -41,6 +45,7 @@ import TransactionDataTable from "@/components/TransactionDataTable.vue";
 import Footer from "@/components/Footer.vue";
 import CategoryAlert from "@/components/CategoryAlert.vue";
 import StatisticsByCategory from "@/components/statistics/StatisticsByCategory.vue";
+import StatisticsByType from "@/components/statistics/StatisticsByType.vue";
 
 export default {
 	name: "App",
@@ -51,6 +56,7 @@ export default {
 		Footer,
 		CategoryAlert,
 		StatisticsByCategory,
+		StatisticsByType,
 	},
 
 	data: () => ({
