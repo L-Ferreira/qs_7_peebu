@@ -1,26 +1,190 @@
 <template>
-  <div>
-    <v-row class="mb-1" justify="start" align="center" no-gutters>
-      <v-col lg="2">
-        <h2>Categories</h2>
-      </v-col>
-    </v-row>
-    <br />
-    <v-row no-gutters>
-      <v-col>
-        <h4>Number of transactions by category</h4>
-        <TransactionsByCategory />
-      </v-col>
-    </v-row>
-  </div>
+	<div>
+		<v-row class="mb-1" justify="start" align="center" no-gutters>
+			<v-col lg="2">
+				<h2>Categories</h2>
+			</v-col>
+		</v-row>
+		<br />
+		<v-row no-gutters>
+			<v-col>
+				<h4>Number of transactions by category</h4>
+				<TransactionsByCategory
+					v-if="loadedTransactions"
+					:chartdata="chartDataNumber"
+				/>
+			</v-col>
+		</v-row>
+	</div>
 </template>
 
 <script>
 import TransactionsByCategory from "@/components/statistics/TransactionsByCategoryChart.vue";
+import axios from "axios";
 
 export default {
-  components: {
-    TransactionsByCategory
-  }
+	components: {
+		TransactionsByCategory,
+	},
+	data: () => ({
+		loadedTransactions: false,
+		chartDataNumber: null,
+
+		expenses: [],
+		number: [],
+
+		numberOfCarRepair: 0,
+		numberOfCateringAndAccommodation: 0,
+		numberOfEducation: 0,
+		numberOfGeneralHouseholdExpenses: 0,
+		numberOfHairdresser: 0,
+		numberOfHealth: 0,
+		numberOfMonthlyPasses: 0,
+		numberOfMotorcycleRepair: 0,
+		numberOfNursingHome: 0,
+		numberOfResidence: 0,
+		numberOfVet: 0,
+	}),
+
+	methods: {
+		async getAllExpenses() {
+			await axios.get("https://peebu-2020.firebaseio.com/.json").then(
+				(response) =>
+					(this.expenses = response.data.filter(({ createdAt }) => {
+						if (this.startDate && this.endDate) {
+							const fromDate = new Date(this.startDate).getTime();
+							const toDate = new Date(this.endDate).getTime();
+							if (fromDate && toDate && fromDate <= toDate) {
+								const nextDate = new Date(createdAt).getTime();
+								return (
+									nextDate >= fromDate && nextDate <= toDate
+								);
+							}
+
+							return true;
+						}
+
+						return true;
+					}))
+			);
+		},
+
+		getTransactionsChart() {
+			this.loadedTransactions = false;
+			this.number = [];
+
+			this.numberOfCarRepair = 0;
+			this.numberOfCateringAndAccommodation = 0;
+			this.numberOfEducation = 0;
+			this.numberOfGeneralHouseholdExpenses = 0;
+			this.numberOfHairdresser = 0;
+			this.numberOfHealth = 0;
+			this.numberOfMonthlyPasses = 0;
+			this.numberOfMotorcycleRepair = 0;
+			this.numberOfNursingHome = 0;
+			this.numberOfResidence = 0;
+			this.numberOfVet = 0;
+
+			this.expenses.forEach((expense) => {
+				switch (expense.category) {
+					case "Car Repair":
+						this.numberOfCarRepair += 1;
+						break;
+					case "Catering And Accommodation":
+						this.numberOfCateringAndAccommodation += 1;
+						break;
+					case "Education":
+						this.numberOfEducation += 1;
+						break;
+					case "General Household Expenses":
+						this.numberOfGeneralHouseholdExpenses += 1;
+						break;
+					case "Hairdresser":
+						this.numberOfHairdresser += 1;
+						break;
+					case "Health":
+						this.numberOfHealth += 1;
+						break;
+					case "Monthly Passes":
+						this.numberOfMonthlyPasses += 1;
+						break;
+					case "Motorcycle Repair":
+						this.numberOfMotorcycleRepair += 1;
+						break;
+					case "Nursing Home":
+						this.numberOfNursingHome += 1;
+						break;
+					case "Residence":
+						this.numberOfResidence += 1;
+						break;
+					case "Vet":
+						this.numberOfVet += 1;
+						break;
+
+					default:
+						break;
+				}
+			});
+			this.number.push(this.numberOfCarRepair);
+			this.number.push(this.numberOfCateringAndAccommodation);
+			this.number.push(this.numberOfEducation);
+			this.number.push(this.numberOfGeneralHouseholdExpenses);
+			this.number.push(this.numberOfHairdresser);
+			this.number.push(this.numberOfHealth);
+			this.number.push(this.numberOfMonthlyPasses);
+			this.number.push(this.numberOfMotorcycleRepair);
+			this.number.push(this.numberOfNursingHome);
+			this.number.push(this.numberOfResidence);
+			this.number.push(this.numberOfVet);
+
+			this.chartDataNumber = {
+				labels: [
+					"Car Repair",
+					"Catering And Accommodation",
+					"Education",
+					"General Household Expenses",
+					"Hairdresser",
+					"Health",
+					"Monthly Passes",
+					"Motorcycle Repair",
+					"Nursing Home",
+					"Residence",
+					"Vet",
+				],
+				datasets: [
+					{
+						label: "Number of transactions by category",
+						backgroundColor: [
+							"#0D47A1",
+							"#01579B",
+							"#1565C0",
+							"#0277BD",
+							"#1976D2",
+							"#0288D1",
+							"#1E88E5",
+							"#039BE5",
+							"#2196F3",
+							"#03A9F4",
+							"#42A5F5",
+						],
+						data: this.number,
+					},
+				],
+			};
+
+			this.loadedTransactions = true;
+		},
+	},
+	async mounted() {
+		await this.getAllExpenses();
+		await this.getTransactionsChart();
+	},
+
+	watch: {
+		expenses: function() {
+			// when the hash prop changes, this function will be fired.
+			this.getTransactionsChart();
+		},
+	},
 };
 </script>
