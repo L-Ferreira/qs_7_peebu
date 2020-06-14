@@ -6,9 +6,21 @@
       </v-col>
     </v-row>
     <br />
+    <v-row no-gutters>
+      <v-col>
+        <h4>Number of transactions by category</h4>
+        <TransactionsByCategory />
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script>
-export default {};
+import TransactionsByCategory from "@/components/statistics/TransactionsByCategoryChart.vue";
+
+export default {
+  components: {
+    TransactionsByCategory
+  }
+};
 </script>
