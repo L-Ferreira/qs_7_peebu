@@ -4,6 +4,70 @@
 			<v-col lg="2">
 				<h2>Balance</h2>
 			</v-col>
+			<v-col md="auto">
+				<h3>Filter by date:</h3>
+			</v-col>
+			<v-col lg="2">
+				<div>
+					<v-menu
+						v-model="menu1"
+						:close-on-content-click="false"
+						nudge-bottom
+						transition="scale-transition"
+						offset-y
+					>
+						<template v-slot:activator="{ on }">
+							<v-text-field
+								v-model="startDate"
+								clearable
+								label="Start date"
+								prepend-icon="mdi-calendar"
+								readonly
+								v-on="on"
+							></v-text-field>
+						</template>
+						<v-date-picker
+							class="pa-0"
+							no-title
+							reactive
+							v-model="startDate"
+							@input="menu1 = false"
+						></v-date-picker>
+					</v-menu>
+				</div>
+			</v-col>
+			<v-col lg="2">
+				<div>
+					<v-menu
+						v-model="menu2"
+						:close-on-content-click="false"
+						transition="scale-transition"
+						offset-y
+					>
+						<template v-slot:activator="{ on }">
+							<v-text-field
+								v-model="endDate"
+								clearable
+								label="End date"
+								prepend-icon="mdi-calendar"
+								readonly
+								v-on="on"
+							></v-text-field>
+						</template>
+						<v-date-picker
+							no-title
+							reactive
+							v-model="endDate"
+							@input="menu2 = false"
+						></v-date-picker>
+					</v-menu>
+				</div>
+			</v-col>
+			<v-col lg="2">
+				<div>
+					<v-btn @click="getAllExpenses()">Go!</v-btn>
+				</div>
+			</v-col>
 		</v-row>
 		<br />
 		<Balance v-if="loadedBalance" :chartdata="chartDataBalance" />
@@ -24,6 +88,12 @@ export default {
 		chartDataBalance: null,
 
 		expenses: [],
+
+		startDate: null,
+		endDate: null,
+
+		menu1: false,
+		menu2: false,
 
 		balanceJan20: 0,
 		balanceFeb20: 0,
