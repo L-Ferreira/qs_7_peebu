@@ -114,6 +114,21 @@ import axios from "axios";
 import TransactionInfoDialog from "./TransactionInfoDialog.vue";
 
 export default {
+	props: {
+		categoriesFixed: {
+			type: Boolean
+		}
+	},
+
+	watch: {
+		categoriesFixed: function(newVal, oldVal) {
+			// watch it
+			this.getAllExpenses();
+
+			console.log("Prop changed: ", newVal, " | was: ", oldVal);
+		}
+	},
+
 	components: {
 		TransactionInfoDialog,
 	},
@@ -184,7 +199,7 @@ export default {
 	methods: {
 		getAllExpenses() {
 			axios.get("https://peebu-2020.firebaseio.com/.json").then(
-				(response) =>
+				(response) => (
 					(this.expenses = response.data.filter(({ createdAt }) => {
 						if (this.startDate && this.endDate) {
 							const fromDate = new Date(this.startDate).getTime();
@@ -198,7 +213,10 @@ export default {
 							return true;
 						}
 						return true;
-					}))
+					})),
+					(this.categoriesFixed = false),
+					this.$emit("categoriesFixedFalse", this.categoriesFixed)
+				)
 			);
 		},
 

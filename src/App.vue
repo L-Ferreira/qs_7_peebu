@@ -8,9 +8,13 @@
 				<h2>Your current balance is: 12345 €</h2>
 				<CategoryAlert
   					v-if="expensesCategorized"
+					@updateTable="isCategoryChanged = true"
 				/>
 				<br />
-				<TransactionDataTable />
+				<TransactionDataTable
+                    :categoriesFixed="isCategoryChanged"
+                    @categoriesFixedFalse="categoriesFalse"
+                />
 				<br />
 				<h1>Statistics</h1>
 			</v-container>
@@ -39,6 +43,7 @@ export default {
 	data: () => ({
 		expensesCategorized: false,
         expenses: [],
+		isCategoryChanged: false,
 	}),
 
 	async created() {
@@ -59,6 +64,10 @@ export default {
                     })
                 )
             );
+        },
+		categoriesFalse(value) {
+            this.isCategoryChanged = value;
+            this.getAllExpenses();
         },
 	}
 };
