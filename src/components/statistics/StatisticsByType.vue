@@ -6,11 +6,23 @@
 			</v-col>
 		</v-row>
 		<br />
+		<v-row no-gutters>
+			<v-col>
+				<h4>Number of transactions by type</h4>
+				<TransactionsByType />
+			</v-col>
+		</v-row>
 	</div>
 </template>
 
 <script>
+import TransactionsByType from "@/components/statistics/TransactionsByTypeChart.vue";
+
 export default {
+	components: {
+		TransactionsByType,
+	},
+
 	data: () => ({}),
 
 	methods: {},
