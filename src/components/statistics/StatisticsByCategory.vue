@@ -16,7 +16,10 @@
 			</v-col>
 			<v-col>
 				<h4>Expenses by category</h4>
-				<ExpensesByCategory />
+				<ExpensesByCategory
+					v-if="loadedExpenses"
+					:chartdata="chartDataAmount"
+				/>
 			</v-col>
 		</v-row>
 	</div>
@@ -35,9 +38,12 @@ export default {
 	data: () => ({
 		loadedTransactions: false,
 		chartDataNumber: null,
+		loadedExpenses: false,
+		chartDataAmount: null,
 
 		expenses: [],
 		number: [],
+		amount: [],
 
 		numberOfCarRepair: 0,
 		numberOfCateringAndAccommodation: 0,
@@ -50,6 +56,17 @@ export default {
 		numberOfNursingHome: 0,
 		numberOfResidence: 0,
 		numberOfVet: 0,
+		amountOfCarRepair: 0,
+		amountOfCateringAndAccommodation: 0,
+		amountOfEducation: 0,
+		amountOfGeneralHouseholdExpenses: 0,
+		amountOfHairdresser: 0,
+		amountOfHealth: 0,
+		amountOfMonthlyPasses: 0,
+		amountOfMotorcycleRepair: 0,
+		amountOfNursingHome: 0,
+		amountOfResidence: 0,
+		amountOfVet: 0,
 	}),
 
 	methods: {
@@ -180,16 +197,122 @@ export default {
 
 			this.loadedTransactions = true;
 		},
+
+		getExpensesChart() {
+			this.loadedExpenses = false;
+			this.amountOfCarRepair = 0;
+			this.amountOfCateringAndAccommodation = 0;
+			this.amountOfEducation = 0;
+			this.amountOfGeneralHouseholdExpenses = 0;
+			this.amountOfHairdresser = 0;
+			this.amountOfHealth = 0;
+			this.amountOfMonthlyPasses = 0;
+			this.amountOfMotorcycleRepair = 0;
+			this.amountOfNursingHome = 0;
+			this.amountOfResidence = 0;
+			this.amountOfVet = 0;
+			this.amount = [];
+
+			this.expenses.forEach((expense) => {
+				switch (expense.category) {
+					case "Car Repair":
+						this.amountOfCarRepair += +expense.amount;
+						break;
+					case "Catering And Accommodation":
+						this.amountOfCateringAndAccommodation += +expense.amount;
+						break;
+					case "Education":
+						this.amountOfEducation += +expense.amount;
+						break;
+					case "General Household Expenses":
+						this.amountOfGeneralHouseholdExpenses += +expense.amount;
+						break;
+					case "Hairdresser":
+						this.amountOfHairdresser += +expense.amount;
+						break;
+					case "Health":
+						this.amountOfHealth += +expense.amount;
+						break;
+					case "Monthly Passes":
+						this.amountOfMonthlyPasses += +expense.amount;
+						break;
+					case "Motorcycle Repair":
+						this.amountOfMotorcycleRepair += +expense.amount;
+						break;
+					case "Nursing Home":
+						this.amountOfNursingHome += +expense.amount;
+						break;
+					case "Residence":
+						this.amountOfResidence += +expense.amount;
+						break;
+					case "Vet":
+						this.amountOfVet += +expense.amount;
+						break;
+					default:
+						break;
+				}
+			});
+
+			this.amount.push(this.amountOfCarRepair);
+			this.amount.push(this.amountOfCateringAndAccommodation);
+			this.amount.push(this.amountOfEducation);
+			this.amount.push(this.amountOfGeneralHouseholdExpenses);
+			this.amount.push(this.amountOfHairdresser);
+			this.amount.push(this.amountOfHealth);
+			this.amount.push(this.amountOfMonthlyPasses);
+			this.amount.push(this.amountOfMotorcycleRepair);
+			this.amount.push(this.amountOfNursingHome);
+			this.amount.push(this.amountOfResidence);
+			this.amount.push(this.amountOfVet);
+
+			this.chartDataAmount = {
+				labels: [
+					"Car Repair",
+					"Catering And Accommodation",
+					"Education",
+					"General Household Expenses",
+					"Hairdresser",
+					"Health",
+					"Monthly Passes",
+					"Motorcycle Repair",
+					"Nursing Home",
+					"Residence",
+					"Vet",
+				],
+				datasets: [
+					{
+						label: "Expenses by category",
+						backgroundColor: [
+							"#0D47A1",
+							"#01579B",
+							"#1565C0",
+							"#0277BD",
+							"#1976D2",
+							"#0288D1",
+							"#1E88E5",
+							"#039BE5",
+							"#2196F3",
+							"#03A9F4",
+							"#42A5F5",
+						],
+						data: this.amount,
+					},
+				],
+			};
+			this.loadedExpenses = true;
+		},
 	},
 	async mounted() {
 		await this.getAllExpenses();
 		await this.getTransactionsChart();
+		await this.getExpensesChart();
 	},
 
 	watch: {
 		expenses: function() {
 			// when the hash prop changes, this function will be fired.
 			this.getTransactionsChart();
+			this.getExpensesChart();
 		},
 	},
 };
